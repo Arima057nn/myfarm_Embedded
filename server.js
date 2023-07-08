@@ -1,29 +1,34 @@
-const express = require('express');
-const http = require('http');
-const WebSocket = require('ws');
-const path = require('path');
-const EventHubReader = require('./scripts/event-hub-reader.js');
+const express = require("express");
+const http = require("http");
+const WebSocket = require("ws");
+const path = require("path");
+const EventHubReader = require("./scripts/event-hub-reader.js");
 
-const iotHubConnectionString = process.env.IotHubConnectionString;
+const iotHubConnectionString =
+  "HostName=Arimaa-IoT-Hub.azure-devices.net;SharedAccessKeyName=service;SharedAccessKey=E5mpGHtp5qlZIsbSBG7d4YTvBuryf2Kya0VSbhuODoY=";
 if (!iotHubConnectionString) {
-  console.error(`Environment variable IotHubConnectionString must be specified.`);
+  console.error(
+    `Environment variable IotHubConnectionString must be specified.`
+  );
   return;
 }
 console.log(`Using IoT Hub connection string [${iotHubConnectionString}]`);
 
-const eventHubConsumerGroup = process.env.EventHubConsumerGroup;
+const eventHubConsumerGroup = "My-Farm";
 console.log(eventHubConsumerGroup);
 if (!eventHubConsumerGroup) {
-  console.error(`Environment variable EventHubConsumerGroup must be specified.`);
+  console.error(
+    `Environment variable EventHubConsumerGroup must be specified.`
+  );
   return;
 }
 console.log(`Using event hub consumer group [${eventHubConsumerGroup}]`);
 
 // Redirect requests to the public subdirectory to the root
 const app = express();
-app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static(path.join(__dirname, "public")));
 app.use((req, res /* , next */) => {
-  res.redirect('/');
+  res.redirect("/");
 });
 
 const server = http.createServer(app);
@@ -42,11 +47,14 @@ wss.broadcast = (data) => {
   });
 };
 
-server.listen(process.env.PORT || '3000', () => {
-  console.log('Listening on %d.', server.address().port);
+server.listen(process.env.PORT || "3000", () => {
+  console.log("Listening on %d.", server.address().port);
 });
 
-const eventHubReader = new EventHubReader(iotHubConnectionString, eventHubConsumerGroup);
+const eventHubReader = new EventHubReader(
+  iotHubConnectionString,
+  eventHubConsumerGroup
+);
 
 (async () => {
   await eventHubReader.startReadMessage((message, date, deviceId) => {
@@ -59,7 +67,7 @@ const eventHubReader = new EventHubReader(iotHubConnectionString, eventHubConsum
 
       wss.broadcast(JSON.stringify(payload));
     } catch (err) {
-      console.error('Error broadcasting: [%s] from [%s].', err, message);
+      console.error("Error broadcasting: [%s] from [%s].", err, message);
     }
   });
 })().catch();
