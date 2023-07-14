@@ -1,10 +1,10 @@
 ---
 page_type: sample
 languages:
-- javascript
-- html
+  - javascript
+  - html
 products:
-- azure-iot-hub
+  - azure-iot-hub
 name: IoTHub data visualization in web application
 urlFragment: web-app-visualization
 description: "This repo contains code for a web application, which can read temperature and humidity data from IoT Hub and show the real-time data on a web page."
@@ -17,10 +17,10 @@ This repo contains code for a web application, which can read temperature and hu
 ## Browser compatiblity
 
 | Browser | Verified version |
-| --- | --- |
-| Edge | 44 |
-| Chrome | 76 |
-| Firefox | 69 |
+| ------- | ---------------- |
+| Edge    | 44               |
+| Chrome  | 76               |
+| Firefox | 69               |
 
 This tutorial, also published [here](https://docs.microsoft.com/en-us/azure/iot-hub/iot-hub-live-data-visualization-in-web-apps), shows how to set up a nodejs website to visualize device data streaming to an [Azure IoT Hub](https://azure.microsoft.com/en-us/services/iot-hub) using the [event hub SDK](https://www.npmjs.com/package/@azure/event-hubs). In this tutorial, you learn how to:
 
@@ -40,7 +40,8 @@ Sign in to the [Azure portal](https://portal.azure.com/).
 ## Create and configure your IoT hub
 
 1. [Create](https://portal.azure.com/#create/Microsoft.IotHub), or [select an existing](https://portal.azure.com/#blade/HubsExtension/BrowseResourceBlade/resourceType/Microsoft.Devices%2FIotHubs), IoT hub.
-    - For **Size and Scale**, you may use "F1: Free tier".
+
+   - For **Size and Scale**, you may use "F1: Free tier".
 
 1. Select the **Settings | Shared access policies** menu item, open the **service** policy, and copy a connection string to be used in later steps.
 
@@ -71,31 +72,33 @@ Public/index.html handles the UI layout for the web page, and references the nec
 ### Run locally
 
 1. To pass parameters to the website, you may use environment variables or parameters.
-    - Open a command prompt or PowerShell terminal and set the environment variables **IotHubConnectionString** and **EventHubConsumerGroup**.
 
-        > Syntax for Windows command prompt is `set key=value`, PowerShell is `$env:key="value"`, and Linux shell is `export key="value"`.
+   - Open a command prompt or PowerShell terminal and set the environment variables **IotHubConnectionString** and **EventHubConsumerGroup**.
 
-    - Or, if you are debugging with [VS Code](https://code.visualstudio.com/docs/nodejs/nodejs-debugging), you can edit the launch.json file and add these values in the env property.
+     > Syntax for Windows command prompt is `set key=value`, PowerShell is `$env:key="value"`, and Linux shell is `export key="value"`.
 
-        ```json
-        "env": {
-            "NODE_ENV": "local",
-            "IotHubConnectionString": "<your IoT hub's connection string>",
-            "EventHubConsumerGroup": "<your consumer group name>"
-        }
-        ```
+   - Or, if you are debugging with [VS Code](https://code.visualstudio.com/docs/nodejs/nodejs-debugging), you can edit the launch.json file and add these values in the env property.
+
+     ```json
+     "env": {
+         "NODE_ENV": "local",
+         "IotHubConnectionString": "<your IoT hub's connection string>",
+         "EventHubConsumerGroup": "<your consumer group name>"
+     }
+     ```
 
 1. In the same directory as package.json, run `npm install` to download and install referenced packages.
 
 1. Run the website one of the following ways:
-    - From the command-line (with environment variables set), use `npm start`
-    - In VS Code, press F5 to start debugging
+
+   - From the command-line (with environment variables set), use `npm start`
+   - In VS Code, press F5 to start debugging
 
 1. Watch for console output from the website.
 
 1. If you are debugging, you may set breakpoints in any of the server-side scripts and step through the code to watch the code work.
 
-1. Open a browser to <http://localhost:3000>.
+1. Open a browser to <http://localhost:3030>.
 
 ### Use an Azure App Service
 
@@ -104,29 +107,32 @@ The approach here is to create a website in Azure, configure it to deploy using 
 > Note: Do not forget to delete these resources after you are done, to avoid unnecessary charges.
 
 1. Create a [Web App](https://ms.portal.azure.com/#create/Microsoft.WebSite).
-    - OS: Windows
-    - Publish: Code
-    - App Service Plan: choose the cheapest plan (e.g. Dev / Test | F1)
+
+   - OS: Windows
+   - Publish: Code
+   - App Service Plan: choose the cheapest plan (e.g. Dev / Test | F1)
 
 1. Select **Settings | Configuration**
-    1. Select **Application settings** and add key/value pairs for:
-        - Add **IotHubConnectionString** and the corresponding value.
-        - Add **EventHubConsumerGroup** and the corresponding value.
-    1. Select **General settings** and turn **Web socksets** to **On**.
+
+   1. Select **Application settings** and add key/value pairs for:
+      - Add **IotHubConnectionString** and the corresponding value.
+      - Add **EventHubConsumerGroup** and the corresponding value.
+   1. Select **General settings** and turn **Web socksets** to **On**.
 
 1. Select **Deployment Options**, and configure for a **Local Git** to deploy your web app.
 
 1. Push the repo's code to the git repo URL in last step with:
-    - In the **Overview** page, find the **Git clone URL**, using the **App Service build service** build provider. Then run the following commands:
 
-        ```cmd
-        git clone https://github.com/Azure-Samples/web-apps-node-iot-hub-data-visualization.git
-        cd web-apps-node-iot-hub-data-visualization
-        git remote add webapp <Git clone URL>
-        git push webapp master:master
-        ```
+   - In the **Overview** page, find the **Git clone URL**, using the **App Service build service** build provider. Then run the following commands:
 
-    - When prompted for credentials, select **Deployment Center | Deployment Credentials** in the Azure portal and use the auto-generated app credentials, or create your own.
+     ```cmd
+     git clone https://github.com/Azure-Samples/web-apps-node-iot-hub-data-visualization.git
+     cd web-apps-node-iot-hub-data-visualization
+     git remote add webapp <Git clone URL>
+     git push webapp master:master
+     ```
+
+   - When prompted for credentials, select **Deployment Center | Deployment Credentials** in the Azure portal and use the auto-generated app credentials, or create your own.
 
 1. After the push and deploy has finished, you can view the page to see the real-time data chart. Find the URL in **Overview** in the Essentials section.
 
