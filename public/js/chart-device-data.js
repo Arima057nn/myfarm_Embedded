@@ -16,17 +16,20 @@ $(document).ready(() => {
       this.timeData = new Array(this.maxLen);
       this.temperatureData = new Array(this.maxLen);
       this.humidityData = new Array(this.maxLen);
+      this.pressureData = new Array(this.maxLen);
     }
 
-    addData(time, temperature, humidity) {
+    addData(time, temperature, humidity, pressure) {
       this.timeData.push(time);
       this.temperatureData.push(temperature);
       this.humidityData.push(humidity || null);
+      this.pressureData.push(pressure || null);
 
       if (this.timeData.length > this.maxLen) {
         this.timeData.shift();
         this.temperatureData.shift();
         this.humidityData.shift();
+        this.pressureData.shift();
       }
     }
   }
@@ -81,6 +84,17 @@ $(document).ready(() => {
         pointHoverBorderColor: "rgba(24, 120, 240, 1)",
         spanGaps: true,
       },
+      {
+        fill: false,
+        label: "Pressure",
+        yAxisID: "Pressure",
+        borderColor: "#22A699",
+        pointBoarderColor: "#22A699",
+        backgroundColor: "#64CCC5",
+        pointHoverBackgroundColor: "#22A699",
+        pointHoverBorderColor: "#22A699",
+        spanGaps: true,
+      },
     ],
   };
 
@@ -92,7 +106,7 @@ $(document).ready(() => {
           type: "linear",
           scaleLabel: {
             labelString: "Temperature (ºC)",
-            display: true,
+            display: false,
           },
           position: "left",
           ticks: {
@@ -106,9 +120,24 @@ $(document).ready(() => {
           type: "linear",
           scaleLabel: {
             labelString: "Humidity (%)",
-            display: true,
+            display: false,
           },
           position: "right",
+          ticks: {
+            suggestedMin: 0,
+            suggestedMax: 100,
+            beginAtZero: true,
+          },
+        },
+        {
+          display: false,
+          id: "Pressure",
+          type: "linear",
+          scaleLabel: {
+            labelString: "Pressure (Pa)",
+            display: false,
+          },
+          position: "left",
           ticks: {
             suggestedMin: 0,
             suggestedMax: 100,
@@ -139,6 +168,7 @@ $(document).ready(() => {
     chartData.labels = device.timeData;
     chartData.datasets[0].data = device.temperatureData;
     chartData.datasets[1].data = device.humidityData;
+    chartData.datasets[2].data = device.pressureData;
     myLineChart.update();
   }
   listOfDevices.addEventListener("change", OnSelectionChange, false);
@@ -157,7 +187,9 @@ $(document).ready(() => {
       // time and either temperature or humidity are required
       if (
         !messageData.MessageDate ||
-        (!messageData.IotData.temperature && !messageData.IotData.humidity)
+        (!messageData.IotData.temperature &&
+          !messageData.IotData.humidity &&
+          !messageData.IotData.pressure)
       ) {
         return;
       }
@@ -171,7 +203,8 @@ $(document).ready(() => {
         existingDeviceData.addData(
           messageData.MessageDate,
           messageData.IotData.temperature,
-          messageData.IotData.humidity
+          messageData.IotData.humidity,
+          messageData.IotData.pressure
         );
       } else {
         const newDeviceData = new DeviceData(messageData.DeviceId);
@@ -182,7 +215,8 @@ $(document).ready(() => {
         newDeviceData.addData(
           messageData.MessageDate,
           messageData.IotData.temperature,
-          messageData.IotData.humidity
+          messageData.IotData.humidity,
+          messageData.IotData.pressure
         );
 
         // add device to the UI list
