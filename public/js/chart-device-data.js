@@ -20,6 +20,9 @@ $(document).ready(() => {
     }
 
     addData(time, temperature, humidity, pressure) {
+      if (checkBtn.checked && humidity > 70) console.log("Tưới nước má ơi !");
+      if (checkBtn2.checked && temperature < 30) console.log("Bật đèn má ơi !");
+
       this.timeData.push(time);
       this.temperatureData.push(temperature);
       this.humidityData.push(humidity || null);
@@ -44,7 +47,7 @@ $(document).ready(() => {
     findDevice(deviceId) {
       for (let i = 0; i < this.devices.length; ++i) {
         if (this.devices[i].deviceId === deviceId) {
-          console.log("device", this.devices[i]);
+          // console.log("device", this.devices[i]);
           return this.devices[i];
         }
       }
@@ -161,6 +164,9 @@ $(document).ready(() => {
   let needsAutoSelect = true;
   const deviceCount = document.getElementById("deviceCount");
   const listOfDevices = document.getElementById("listOfDevices");
+  const checkBtn = document.getElementById("autoSelect");
+  const checkBtn2 = document.getElementById("autoSelect2");
+
   function OnSelectionChange() {
     const device = trackedDevices.findDevice(
       listOfDevices[listOfDevices.selectedIndex].text
@@ -182,7 +188,7 @@ $(document).ready(() => {
   webSocket.onmessage = function onMessage(message) {
     try {
       const messageData = JSON.parse(message.data);
-      console.log(messageData);
+      // console.log(messageData);
 
       // time and either temperature or humidity are required
       if (

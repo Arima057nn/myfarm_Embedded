@@ -7,7 +7,7 @@ body {
   
   text-align: center;
   width: 100%;
-  height: 100vh;
+  min-height: 100vh;
   /* linear-gradient(10deg, #fff, transparent 20%), */
   background-image:url("../image/everdream-valley-ky-nghi-he-nong-trai-thumb.jpg");
   background-repeat: no-repeat;
@@ -61,12 +61,13 @@ select:disabled::-ms-expand {
   width: 100%;
   display: flex;
   justify-content: center;
+  padding-bottom: 20px;
 }
 
 .chart{
   background-color: #fff;
-  width: 1200px;
-  /* height: 800px; */
+  width: 70%;
+  max-height: 800px;
   border-radius: 4px;
   padding: 24px 12px;
 }
