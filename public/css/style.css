@@ -4,12 +4,12 @@ body {
   font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
   font-family: "Merienda One", cursive;
   margin: 0;
-  
+
   text-align: center;
   width: 100%;
   min-height: 100vh;
   /* linear-gradient(10deg, #fff, transparent 20%), */
-  background-image:url("../image/everdream-valley-ky-nghi-he-nong-trai-thumb.jpg");
+  background-image: url("../image/everdream-valley-ky-nghi-he-nong-trai-thumb.jpg");
   background-repeat: no-repeat;
   background-size: cover;
   background-position: center;
@@ -21,11 +21,10 @@ body {
   flex-wrap: nowrap;
   justify-content: space-between;
   /* background-color: #fff; */
-
 }
 
 a {
-  color: #00B7FF;
+  color: #00b7ff;
 }
 
 body select {
@@ -34,12 +33,14 @@ body select {
   height: auto;
   border: 1px solid #e3e3e3;
   border-radius: 3px;
-  background: url("https://i.ibb.co/b7xjLrB/selectbox-arrow.png") right center no-repeat;
+  background: url("https://i.ibb.co/b7xjLrB/selectbox-arrow.png") right center
+    no-repeat;
   background-color: #fff;
   color: #444444;
   line-height: 16px;
   appearance: none;
-  /* this is must */ -webkit-appearance: none;
+  /* this is must */
+  -webkit-appearance: none;
   -moz-appearance: none;
 }
 
@@ -57,14 +58,14 @@ select:disabled::-ms-expand {
   background: #f60;
 }
 
-.wrapper{
+.wrapper {
   width: 100%;
   display: flex;
   justify-content: center;
   padding-bottom: 20px;
 }
 
-.chart{
+.chart {
   background-color: #fff;
   width: 70%;
   max-height: 800px;
@@ -72,7 +73,7 @@ select:disabled::-ms-expand {
   padding: 24px 12px;
 }
 
-.header{
+.header {
   height: 88px;
   width: 100%;
   background-color: rgba(0, 0, 0, 0.55);
@@ -80,7 +81,7 @@ select:disabled::-ms-expand {
   justify-content: center;
 }
 
-.tittle{
+.tittle {
   font-size: 50px;
   font-weight: 700;
   color: #fff;
@@ -88,5 +89,4 @@ select:disabled::-ms-expand {
   justify-content: center;
   align-items: center;
   height: 100%;
-  
 }

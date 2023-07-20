@@ -1,6 +1,20 @@
 /* eslint-disable max-classes-per-file */
 /* eslint-disable no-restricted-globals */
 /* eslint-disable no-undef */
+
+const datas = [
+  {
+    id: "mydeviceID",
+    position: "Nhà 1",
+    name: "Device 1",
+  },
+  {
+    id: "Device3",
+    position: "Nhà 2",
+    name: "Device 2",
+  },
+];
+
 $(document).ready(() => {
   // if deployed to a site supporting SSL, use wss://
   const protocol = document.location.protocol.startsWith("https")
@@ -166,11 +180,24 @@ $(document).ready(() => {
   const listOfDevices = document.getElementById("listOfDevices");
   const checkBtn = document.getElementById("autoSelect");
   const checkBtn2 = document.getElementById("autoSelect2");
+  const table = document.getElementById("info");
 
   function OnSelectionChange() {
     const device = trackedDevices.findDevice(
       listOfDevices[listOfDevices.selectedIndex].text
     );
+
+    const dev = datas.filter((item) => item.id === device.deviceId);
+
+    console.log("DV:", dev[0]);
+    table.innerHTML =
+      '<div style="background:white;position:fixed;top:35%;right:5px;border-radius:4px;"><h1>' +
+      "name:" +
+      dev[0].name +
+      "<br>" +
+      "position:" +
+      dev[0].position +
+      "</h1></div>";
     chartData.labels = device.timeData;
     chartData.datasets[0].data = device.temperatureData;
     chartData.datasets[1].data = device.humidityData;
