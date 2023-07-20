@@ -7,13 +7,25 @@ const datas = [
     id: "mydeviceID",
     position: "Nhà 1",
     name: "Device 1",
+    water: true,
+    lamp: true,
   },
   {
     id: "Device3",
     position: "Nhà 2",
     name: "Device 2",
+    water: false,
+    lamp: false,
   },
 ];
+
+function waterButtonClick() {
+  console.log("Oke tưới nước cho");
+}
+
+function lampButtonClick() {
+  console.log("Oke bật đèn cho");
+}
 
 $(document).ready(() => {
   // if deployed to a site supporting SSL, use wss://
@@ -34,8 +46,8 @@ $(document).ready(() => {
     }
 
     addData(time, temperature, humidity, pressure) {
-      if (checkBtn.checked && humidity > 70) console.log("Tưới nước má ơi !");
-      if (checkBtn2.checked && temperature < 30) console.log("Bật đèn má ơi !");
+      // if (checkBtn.checked && humidity > 70) console.log("Tưới nước má ơi !");
+      // if (checkBtn2.checked && temperature < 30) console.log("Bật đèn má ơi !");
 
       this.timeData.push(time);
       this.temperatureData.push(temperature);
@@ -180,7 +192,8 @@ $(document).ready(() => {
   const listOfDevices = document.getElementById("listOfDevices");
   const checkBtn = document.getElementById("autoSelect");
   const checkBtn2 = document.getElementById("autoSelect2");
-  const table = document.getElementById("info");
+  const info = document.getElementById("info");
+  const action = document.getElementById("action");
 
   function OnSelectionChange() {
     const device = trackedDevices.findDevice(
@@ -188,9 +201,9 @@ $(document).ready(() => {
     );
 
     const dev = datas.filter((item) => item.id === device.deviceId);
-
     console.log("DV:", dev[0]);
-    table.innerHTML =
+    const dv = dev[0].id;
+    info.innerHTML =
       '<div style="background:white;position:fixed;top:35%;right:5px;border-radius:4px;"><h1>' +
       "name:" +
       dev[0].name +
@@ -198,6 +211,16 @@ $(document).ready(() => {
       "position:" +
       dev[0].position +
       "</h1></div>";
+
+    action.innerHTML =
+      '<div style="background:white;position:fixed;top:35%;left:20px;border-radius:4px;"><h1>' +
+      (dev[0].water
+        ? '<button onclick="waterButtonClick()">Water</button>'
+        : "") +
+      "<br>" +
+      (dev[0].lamp ? '<button onclick="lampButtonClick()">Lamp</button>' : "") +
+      "</h1></div>";
+
     chartData.labels = device.timeData;
     chartData.datasets[0].data = device.temperatureData;
     chartData.datasets[1].data = device.humidityData;
@@ -232,7 +255,20 @@ $(document).ready(() => {
         messageData.DeviceId
       );
 
+      const dev = datas.filter((item) => item.id === messageData.DeviceId);
+      // console.log("device: ", dev[0].id);
+
       if (existingDeviceData) {
+        // console.log("device: ", dev[0].id, "message:", messageData.IotData);
+        if (checkBtn.checked && messageData.IotData.humidity > 70)
+          console.log("Tưới nước cho", dev[0].id);
+        if (checkBtn2.checked && messageData.IotData.temperature < 30)
+          console.log("Bật đèn cho", dev[0].id);
+
+        if (dev[0].water && messageData.IotData.humidity > 70)
+          console.log("Tưới nước cho", dev[0].id);
+        if (dev[0].lamp && messageData.IotData.temperature < 30)
+          console.log("Bật đèn cho", dev[0].id);
         existingDeviceData.addData(
           messageData.MessageDate,
           messageData.IotData.temperature,
