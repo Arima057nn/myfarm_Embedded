@@ -4,6 +4,9 @@ const WebSocket = require("ws");
 const path = require("path");
 const EventHubReader = require("./scripts/event-hub-reader.js");
 
+var Client = require("azure-iothub").Client;
+var Message = require("azure-iot-common").Message;
+
 const iotHubConnectionString =
   "HostName=Arimaa-IoT-Hub.azure-devices.net;SharedAccessKeyName=service;SharedAccessKey=E5mpGHtp5qlZIsbSBG7d4YTvBuryf2Kya0VSbhuODoY=";
 if (!iotHubConnectionString) {
@@ -66,8 +69,47 @@ const eventHubReader = new EventHubReader(
       };
 
       wss.broadcast(JSON.stringify(payload));
+
+      // Gửi tin nhắn C2D tới thiết bị với ID là deviceId
+      sendC2DMessage(deviceId, "Chan vl");
     } catch (err) {
       console.error("Error broadcasting: [%s] from [%s].", err, message);
     }
   });
+
+  function printResultFor(op) {
+    return function printResult(err, res) {
+      if (err) console.log(op + " error: " + err.toString());
+      if (res) console.log(op + " status: " + res.constructor.name);
+    };
+  }
+
+  function receiveFeedback(err, receiver) {
+    receiver.on("message", function (msg) {
+      console.log("Feedback message:");
+      console.log(msg.getData().toString("utf-8"));
+    });
+  }
+
+  async function sendC2DMessage(deviceId, message) {
+    try {
+      const serviceClient = Client.fromConnectionString(iotHubConnectionString);
+
+      serviceClient.open((err) => {
+        if (err) {
+          console.error("Could not connect: " + err.message);
+        } else {
+          console.log("Service client connected");
+          serviceClient.getFeedbackReceiver(receiveFeedback);
+          const c2dMessage = new Message(message);
+          c2dMessage.ack = "full";
+          c2dMessage.messageId = "My Message ID";
+          console.log("Sending message: " + c2dMessage.getData());
+          serviceClient.send(deviceId, c2dMessage, printResultFor("send"));
+        }
+      });
+    } catch (error) {
+      console.error("Error sending C2D message:", error);
+    }
+  }
 })().catch();
