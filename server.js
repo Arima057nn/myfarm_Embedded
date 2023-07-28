@@ -71,7 +71,14 @@ const eventHubReader = new EventHubReader(
       wss.broadcast(JSON.stringify(payload));
 
       // Gửi tin nhắn C2D tới thiết bị với ID là deviceId
-      sendC2DMessage(deviceId, "Chan vl");
+      if (message.humidity > 72) {
+        sendC2DMessage(deviceId, "Tưới cây đi");
+        console.log("Tưới cây cho: ", deviceId);
+      }
+      if (message.temperatur > 30) {
+        sendC2DMessage(deviceId, "Bật đèn hộ cái");
+        console.log("Bật đèn cho: ", deviceId);
+      }
     } catch (err) {
       console.error("Error broadcasting: [%s] from [%s].", err, message);
     }
