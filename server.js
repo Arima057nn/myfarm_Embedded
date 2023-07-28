@@ -6,6 +6,27 @@ const EventHubReader = require("./scripts/event-hub-reader.js");
 
 var Client = require("azure-iothub").Client;
 var Message = require("azure-iot-common").Message;
+let lamp = true;
+let water = true;
+
+const datas = [
+  {
+    id: "mydeviceID",
+    location: "Nhà 1",
+    name: "Device 1",
+    description: "",
+    water: 70,
+    lamp: 20,
+  },
+  {
+    id: "Device3",
+    location: "Nhà 2",
+    name: "Device 2",
+    description: "",
+    water: 72,
+    lamp: 22,
+  },
+];
 
 const iotHubConnectionString =
   "HostName=Arimaa-IoT-Hub.azure-devices.net;SharedAccessKeyName=service;SharedAccessKey=E5mpGHtp5qlZIsbSBG7d4YTvBuryf2Kya0VSbhuODoY=";
@@ -70,14 +91,20 @@ const eventHubReader = new EventHubReader(
 
       wss.broadcast(JSON.stringify(payload));
 
+      const dev = datas.filter((item) => item.id === deviceId);
+
       // Gửi tin nhắn C2D tới thiết bị với ID là deviceId
-      if (message.humidity > 72) {
-        sendC2DMessage(deviceId, "Tưới cây đi");
-        console.log("Tưới cây cho: ", deviceId);
+      if (water) {
+        if (message.humidity > dev[0].water) {
+          sendC2DMessage(deviceId, "Tưới cây đi");
+          console.log("Tưới cây cho: ", deviceId);
+        }
       }
-      if (message.temperatur > 30) {
-        sendC2DMessage(deviceId, "Bật đèn hộ cái");
-        console.log("Bật đèn cho: ", deviceId);
+      if (lamp) {
+        if (message.temperature > dev[0].lamp) {
+          sendC2DMessage(deviceId, "Bật đèn hộ cái");
+          console.log("Bật đèn cho: ", deviceId);
+        }
       }
     } catch (err) {
       console.error("Error broadcasting: [%s] from [%s].", err, message);

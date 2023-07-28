@@ -5,13 +5,19 @@
 const datas = [
   {
     id: "mydeviceID",
-    position: "Nhà 1",
+    location: "Nhà 1",
     name: "Device 1",
+    description: "",
+    water: 70,
+    lamp: 25,
   },
   {
     id: "Device3",
-    position: "Nhà 2",
+    location: "Nhà 2",
     name: "Device 2",
+    description: "",
+    water: 72,
+    lamp: 27,
   },
 ];
 
@@ -191,12 +197,12 @@ $(document).ready(() => {
 
     console.log("DV:", dev[0]);
     table.innerHTML =
-      '<div style="background:white;position:fixed;top:35%;right:5px;border-radius:4px;"><h1>' +
+      '<div style="background:white;font-size:12px;position:fixed;top:35%;right:5px;border-radius:4px;"><h1>' +
       "name:" +
       dev[0].name +
       "<br>" +
       "position:" +
-      dev[0].position +
+      dev[0].location +
       "</h1></div>";
     chartData.labels = device.timeData;
     chartData.datasets[0].data = device.temperatureData;
