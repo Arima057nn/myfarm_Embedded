@@ -1,3 +1,4 @@
+// Mảng dữ liệu datas
 const datas = [
   {
     id: "mydeviceID",
@@ -16,5 +17,14 @@ const datas = [
     lamp: 27,
   },
 ];
+
+// Lưu mảng datas vào localStorage
+localStorage.setItem("datas", JSON.stringify(datas));
+
+// Khi muốn truy xuất lại mảng datas từ localStorage
+const storedDatas = JSON.parse(localStorage.getItem("datas"));
+
+console.log(storedDatas); // Hiển thị mảng dữ liệu đã được lưu trong localStorage
+
 
 module.exports = datas;

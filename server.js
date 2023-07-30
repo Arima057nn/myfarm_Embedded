@@ -8,7 +8,7 @@ var Client = require("azure-iothub").Client;
 var Message = require("azure-iot-common").Message;
 let lamp = true;
 let water = true;
-var datas = [];
+let datas = [];
 
 // kết nối với mysql
 // server.js
@@ -114,6 +114,7 @@ connectAndFetchData()
     );
 
     (async () => {
+      // nó nhận của tất ca thiết bị, mỗi lần sẽ phải dùng
       await eventHubReader.startReadMessage((message, date, deviceId) => {
         try {
           const payload = {
@@ -123,12 +124,14 @@ connectAndFetchData()
           };
 
           wss.broadcast(JSON.stringify(payload));
-
+          
           const dev = datas.filter((item) => item.id === deviceId);
-          // console.log("dev: ", dev);
+          console.log("dev:", dev[0].water, dev[0].lamp);
           // Gửi tin nhắn C2D tới thiết bị với ID là deviceId
           if (water) {
             if (message.humidity > dev[0].water) {
+          console.log("devvvvvvvvv:", dev[0].water, dev[0].humidity);
+
               if (dev[0].humidity > dev[0].water) {
                 console.log("Đã tưới cây cho:", deviceId, dev[0].humidity);
               } else {
