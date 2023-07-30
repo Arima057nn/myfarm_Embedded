@@ -90,3 +90,24 @@ select:disabled::-ms-expand {
   align-items: center;
   height: 100%;
 }
+
+
+element.style {
+}
+*, ::after, ::before {
+    box-sizing: border-box;
+}
+
+.header {
+  position:fixed;
+  top:0;
+  left:0;
+  width:100%;
+
+}
+
+.flexHeader {
+  margin-top: 88px;
+  padding: 0 10px;
+}
+
