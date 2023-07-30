@@ -8,6 +8,16 @@ var Client = require("azure-iothub").Client;
 var Message = require("azure-iot-common").Message;
 let lamp = true;
 let water = true;
+let dev1 = {
+  temperature: 0,
+  humidity: 0,
+  pressure: 0,
+};
+let dev2 = {
+  temperature: 0,
+  humidity: 0,
+  pressure: 0,
+};
 
 const datas = [
   {
@@ -36,17 +46,17 @@ if (!iotHubConnectionString) {
   );
   return;
 }
-console.log(`Using IoT Hub connection string [${iotHubConnectionString}]`);
+// console.log(`Using IoT Hub connection string [${iotHubConnectionString}]`);
 
 const eventHubConsumerGroup = "My-Farm";
-console.log(eventHubConsumerGroup);
+// console.log(eventHubConsumerGroup);
 if (!eventHubConsumerGroup) {
   console.error(
     `Environment variable EventHubConsumerGroup must be specified.`
   );
   return;
 }
-console.log(`Using event hub consumer group [${eventHubConsumerGroup}]`);
+// console.log(`Using event hub consumer group [${eventHubConsumerGroup}]`);
 
 // Redirect requests to the public subdirectory to the root
 const app = express();
@@ -62,7 +72,7 @@ wss.broadcast = (data) => {
   wss.clients.forEach((client) => {
     if (client.readyState === WebSocket.OPEN) {
       try {
-        console.log(`Broadcasting data ${data}`);
+        // console.log(`Broadcasting data ${data}`);
         client.send(data);
       } catch (e) {
         console.error(e);
@@ -72,7 +82,7 @@ wss.broadcast = (data) => {
 };
 
 server.listen(process.env.PORT || "3030", () => {
-  console.log("Listening on %d.", server.address().port);
+  // console.log("Listening on %d.", server.address().port);
 });
 
 const eventHubReader = new EventHubReader(
@@ -96,15 +106,37 @@ const eventHubReader = new EventHubReader(
       // Gửi tin nhắn C2D tới thiết bị với ID là deviceId
       if (water) {
         if (message.humidity > dev[0].water) {
-          sendC2DMessage(deviceId, "Tưới cây đi");
-          console.log("Tưới cây cho: ", deviceId);
+          if (deviceId === "mydeviceID" && dev1.humidity > dev[0].water) {
+            console.log("Đang tưới cây cho mydeviceID rồi", dev1.humidity);
+          } else if (deviceId === "Device3" && dev2.humidity > dev[0].water) {
+            console.log("Đang tưới cây cho Device3 rồi", dev2.humidity);
+          } else {
+            sendC2DMessage(deviceId, "Tưới cây đi");
+            console.log("Tưới cây cho: ", deviceId);
+          }
         }
       }
       if (lamp) {
         if (message.temperature > dev[0].lamp) {
-          sendC2DMessage(deviceId, "Bật đèn hộ cái");
-          console.log("Bật đèn cho: ", deviceId);
+          if (deviceId === "mydeviceID" && dev1.temperature > dev[0].lamp) {
+            console.log("Đang bật đèn cho mydeviceID rồi", dev1.temperature);
+          } else if (deviceId === "Device3" && dev2.temperature > dev[0].lamp) {
+            console.log("Đang bật đèn cho Device3 rồi", dev2.temperature);
+          } else {
+            sendC2DMessage(deviceId, "Bật đèn hộ cái");
+            console.log("Bật đèn cho: ", deviceId);
+          }
         }
+      }
+      if (deviceId === "mydeviceID") {
+        dev1.temperature = message.temperature;
+        dev1.humidity = message.humidity;
+        dev1.pressure = message.pressure;
+      }
+      if (deviceId === "Device3") {
+        dev2.temperature = message.temperature;
+        dev2.humidity = message.humidity;
+        dev2.pressure = message.pressure;
       }
     } catch (err) {
       console.error("Error broadcasting: [%s] from [%s].", err, message);
@@ -113,15 +145,15 @@ const eventHubReader = new EventHubReader(
 
   function printResultFor(op) {
     return function printResult(err, res) {
-      if (err) console.log(op + " error: " + err.toString());
-      if (res) console.log(op + " status: " + res.constructor.name);
+      // if (err) console.log(op + " error: " + err.toString());
+      // if (res) console.log(op + " status: " + res.constructor.name);
     };
   }
 
   function receiveFeedback(err, receiver) {
     receiver.on("message", function (msg) {
-      console.log("Feedback message:");
-      console.log(msg.getData().toString("utf-8"));
+      // console.log("Feedback message:");
+      // console.log(msg.getData().toString("utf-8"));
     });
   }
 
@@ -138,7 +170,7 @@ const eventHubReader = new EventHubReader(
           const c2dMessage = new Message(message);
           c2dMessage.ack = "full";
           c2dMessage.messageId = "My Message ID";
-          console.log("Sending message: " + c2dMessage.getData());
+          // console.log("Sending message: " + c2dMessage.getData());
           serviceClient.send(deviceId, c2dMessage, printResultFor("send"));
         }
       });
