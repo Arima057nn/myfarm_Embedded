@@ -3,38 +3,12 @@ const http = require("http");
 const WebSocket = require("ws");
 const path = require("path");
 const EventHubReader = require("./scripts/event-hub-reader.js");
+let datas = require("./public/data/data.js");
 
 var Client = require("azure-iothub").Client;
 var Message = require("azure-iot-common").Message;
 let lamp = true;
 let water = true;
-
-let datas = [
-  {
-    id: "mydeviceID",
-    index: 0,
-    location: "Nhà 1",
-    name: "Device 1",
-    description: "",
-    water: 70,
-    lamp: 20,
-    temperature: 0,
-    humidity: 0,
-    pressure: 0,
-  },
-  {
-    id: "Device3",
-    index: 1, //Tự set cho nó bằng số thứ tự trong mảng
-    location: "Nhà 2",
-    name: "Device 2",
-    description: "",
-    water: 72,
-    lamp: 22,
-    temperature: 0, // defaule bằng 0
-    humidity: 0, // defaule bằng 0
-    pressure: 0, // defaule bằng 0
-  },
-];
 
 const iotHubConnectionString =
   "HostName=Arimaa-IoT-Hub.azure-devices.net;SharedAccessKeyName=service;SharedAccessKey=E5mpGHtp5qlZIsbSBG7d4YTvBuryf2Kya0VSbhuODoY=";
@@ -107,9 +81,11 @@ const eventHubReader = new EventHubReader(
           if (dev[0].humidity > dev[0].water) {
             console.log("Đã tưới cây cho:", deviceId, dev[0].humidity);
           } else {
-            sendC2DMessage(deviceId, "Tưới cây đi");
-            console.log("Tưới cây cho: ", deviceId);
+            sendC2DMessage(deviceId, "bat-tuoi");
+            console.log("Bật tưới cây cho: ", deviceId);
           }
+        } else {
+          sendC2DMessage(deviceId, "tat-tuoi");
         }
       }
       if (lamp) {
@@ -117,12 +93,14 @@ const eventHubReader = new EventHubReader(
           if (dev[0].temperature > dev[0].lamp) {
             console.log("Đã bật đèn cho:", deviceId, dev[0].temperature);
           } else {
-            sendC2DMessage(deviceId, "Bật đèn hộ cái");
+            sendC2DMessage(deviceId, "bat-suoi");
             console.log("Bật đèn cho: ", deviceId);
           }
+        } else {
+          sendC2DMessage(deviceId, "tat-suoi");
         }
       }
-
+      //tat tuoi, tat suoi, bat tuoi, bat suoi
       datas[dev[0].index].temperature = message.temperature;
       datas[dev[0].index].humidity = message.humidity;
       datas[dev[0].index].pressure = message.pressure;

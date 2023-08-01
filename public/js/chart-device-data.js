@@ -40,8 +40,8 @@ $(document).ready(() => {
     }
 
     addData(time, temperature, humidity, pressure) {
-      if (checkBtn.checked && humidity > 70) console.log("Tưới nước má ơi !");
-      if (checkBtn2.checked && temperature < 30) console.log("Bật đèn má ơi !");
+      // if (checkBtn.checked && humidity > 70) console.log("Tưới nước má ơi !");
+      // if (checkBtn2.checked && temperature < 30) console.log("Bật đèn má ơi !");
 
       this.timeData.push(time);
       this.temperatureData.push(temperature);
@@ -184,8 +184,8 @@ $(document).ready(() => {
   let needsAutoSelect = true;
   const deviceCount = document.getElementById("deviceCount");
   const listOfDevices = document.getElementById("listOfDevices");
-  const checkBtn = document.getElementById("autoSelect");
-  const checkBtn2 = document.getElementById("autoSelect2");
+  // const checkBtn = document.getElementById("autoSelect");
+  // const checkBtn2 = document.getElementById("autoSelect2");
   const table = document.getElementById("info");
 
   function OnSelectionChange() {
