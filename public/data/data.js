@@ -6,10 +6,11 @@ let datas = [
     name: "Device 1",
     description: "",
     water: 70,
-    lamp: 20,
+    lamp: 25,
     temperature: 0,
     humidity: 0,
     pressure: 0,
+    sendC2D: "listen-device-1",
   },
   {
     id: "Device3",
@@ -22,6 +23,7 @@ let datas = [
     temperature: 0, // defaule bằng 0
     humidity: 0, // defaule bằng 0
     pressure: 0, // defaule bằng 0
+    sendC2D: "listen-device-2",
   },
 ];
 

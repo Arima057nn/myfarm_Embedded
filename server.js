@@ -74,32 +74,44 @@ const eventHubReader = new EventHubReader(
       wss.broadcast(JSON.stringify(payload));
 
       const dev = datas.filter((item) => item.id === deviceId);
-      // console.log("dev: ", dev);
+      console.log("dev: ", deviceId);
       // Gửi tin nhắn C2D tới thiết bị với ID là deviceId
+
       if (water) {
         if (message.humidity > dev[0].water) {
           if (dev[0].humidity > dev[0].water) {
             console.log("Đã tưới cây cho:", deviceId, dev[0].humidity);
           } else {
-            sendC2DMessage(deviceId, "bat-tuoi");
+            sendC2DMessage(dev[0].sendC2D, "bat-tuoi");
             console.log("Bật tưới cây cho: ", deviceId);
           }
         } else {
-          sendC2DMessage(deviceId, "tat-tuoi");
+          if (dev[0].humidity < dev[0].water) {
+            console.log("Đã tắt tưới cây cho:", deviceId, dev[0].humidity);
+          } else {
+            // console.log("Bật tưới cây cho: ", deviceId);
+            sendC2DMessage(dev[0].sendC2D, "tat-tuoi");
+          }
         }
       }
       if (lamp) {
         if (message.temperature > dev[0].lamp) {
           if (dev[0].temperature > dev[0].lamp) {
-            console.log("Đã bật đèn cho:", deviceId, dev[0].temperature);
+            console.log("Đã sưởi cây cho:", deviceId, dev[0].temperature);
           } else {
-            sendC2DMessage(deviceId, "bat-suoi");
-            console.log("Bật đèn cho: ", deviceId);
+            sendC2DMessage(dev[0].sendC2D, "bat-suoi");
+            console.log("Bật sưởi cây cho: ", deviceId);
           }
         } else {
-          sendC2DMessage(deviceId, "tat-suoi");
+          if (dev[0].temperature < dev[0].lamp) {
+            console.log("Đã tắt sưởi cây cho:", deviceId, dev[0].temperature);
+          } else {
+            // console.log("Bật sưởi cây cho: ", deviceId);
+            sendC2DMessage(dev[0].sendC2D, "tat-suoi");
+          }
         }
       }
+
       //tat tuoi, tat suoi, bat tuoi, bat suoi
       datas[dev[0].index].temperature = message.temperature;
       datas[dev[0].index].humidity = message.humidity;
