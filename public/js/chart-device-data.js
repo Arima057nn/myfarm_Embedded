@@ -5,19 +5,29 @@
 const datas = [
   {
     id: "mydeviceID",
+    index: 0,
     location: "Nhà 1",
     name: "Device 1",
     description: "",
     water: 70,
-    lamp: 25,
+    lamp: 26,
+    temperature: 0,
+    humidity: 0,
+    pressure: 0,
+    sendC2D: "listen-device-1",
   },
   {
     id: "Device3",
+    index: 1, //Tự set cho nó bằng số thứ tự trong mảng
     location: "Nhà 2",
     name: "Device 2",
     description: "",
     water: 72,
-    lamp: 27,
+    lamp: 22,
+    temperature: 0, // defaule bằng 0
+    humidity: 0, // defaule bằng 0
+    pressure: 0, // defaule bằng 0
+    sendC2D: "listen-device-2",
   },
 ];
 
@@ -37,6 +47,7 @@ $(document).ready(() => {
       this.temperatureData = new Array(this.maxLen);
       this.humidityData = new Array(this.maxLen);
       this.pressureData = new Array(this.maxLen);
+      this.present = new Array(3);
     }
 
     addData(time, temperature, humidity, pressure) {
@@ -47,6 +58,11 @@ $(document).ready(() => {
       this.temperatureData.push(temperature);
       this.humidityData.push(humidity || null);
       this.pressureData.push(pressure || null);
+      this.present = {
+        temperature: temperature,
+        humidity: humidity,
+        pressure: pressure,
+      };
 
       if (this.timeData.length > this.maxLen) {
         this.timeData.shift();
@@ -120,7 +136,18 @@ $(document).ready(() => {
       },
     ],
   };
-
+  const lightData = {
+    datasets: [
+      {
+        data: [0, 360],
+        backgroundColor: [
+          "#FD8D14", // Màu sáng
+          "#FFEEBB", // Màu tối
+        ],
+        borderWidth: 0,
+      },
+    ],
+  };
   const chartOptions = {
     scales: {
       yAxes: [
@@ -173,10 +200,27 @@ $(document).ready(() => {
 
   // Get the context of the canvas element we want to select
   const ctx = document.getElementById("iotChart").getContext("2d");
+  const ctxLight = document.getElementById("lightChart").getContext("2d");
   const myLineChart = new Chart(ctx, {
     type: "line",
     data: chartData,
     options: chartOptions,
+  });
+
+  const myLightChart = new Chart(ctxLight, {
+    type: "pie",
+    data: lightData,
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      cutoutPercentage: 10, // Kích thước của bóng đèn
+      legend: {
+        display: false,
+      },
+      tooltips: {
+        enabled: false,
+      },
+    },
   });
 
   // Manage a list of devices in the UI, and update which device data the chart is showing
@@ -203,11 +247,27 @@ $(document).ready(() => {
       "<br>" +
       "position:" +
       dev[0].location +
+      "<br>" +
+      "lamp:" +
+      dev[0].lamp +
+      "Pa" +
+      "<br>" +
+      "water:" +
+      dev[0].water +
+      "ºC" +
       "</h1></div>";
     chartData.labels = device.timeData;
     chartData.datasets[0].data = device.temperatureData;
     chartData.datasets[1].data = device.humidityData;
     chartData.datasets[2].data = device.pressureData;
+    console.log("first:", device.present);
+    if (device.present.temperature > dev[0].lamp) {
+      lightData.datasets[0].data = [360, 0];
+      myLightChart.update();
+    } else {
+      lightData.datasets[0].data = [0, 360];
+      myLightChart.update();
+    }
     myLineChart.update();
   }
   listOfDevices.addEventListener("change", OnSelectionChange, false);
@@ -239,12 +299,22 @@ $(document).ready(() => {
       );
 
       if (existingDeviceData) {
+        let dev = datas.filter((item) => item.id === messageData.DeviceId);
+        // console.log("exist: ", dev);
+
         existingDeviceData.addData(
           messageData.MessageDate,
           messageData.IotData.temperature,
           messageData.IotData.humidity,
           messageData.IotData.pressure
         );
+        if (messageData.IotData.temperature > dev[0].lamp) {
+          lightData.datasets[0].data = [360, 0];
+          myLightChart.update();
+        } else {
+          lightData.datasets[0].data = [0, 360];
+          myLightChart.update();
+        }
       } else {
         const newDeviceData = new DeviceData(messageData.DeviceId);
         trackedDevices.devices.push(newDeviceData);
