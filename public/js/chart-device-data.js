@@ -224,7 +224,7 @@ $(document).ready(() => {
     options: {
       responsive: true,
       maintainAspectRatio: false,
-      cutoutPercentage: 10, // Kích thước của bóng đèn
+      cutoutPercentage: 5, // Kích thước của bóng đèn
       legend: {
         display: false,
       },
@@ -239,7 +239,7 @@ $(document).ready(() => {
     options: {
       responsive: true,
       maintainAspectRatio: false,
-      cutoutPercentage: 10, // Kích thước của bóng đèn
+      cutoutPercentage: 5, // Kích thước của bóng đèn
       legend: {
         display: false,
       },
@@ -254,9 +254,11 @@ $(document).ready(() => {
   let needsAutoSelect = true;
   const deviceCount = document.getElementById("deviceCount");
   const listOfDevices = document.getElementById("listOfDevices");
-  // const checkBtn = document.getElementById("autoSelect");
-  // const checkBtn2 = document.getElementById("autoSelect2");
-  const table = document.getElementById("info");
+  const deviceName = document.getElementById("device-name");
+  const deviceLocation = document.getElementById("device-location");
+  const deviceDescription = document.getElementById("device-description");
+  const deviceLamp = document.getElementById("device-lamp");
+  const deviceWater = document.getElementById("device-water");
 
   function OnSelectionChange() {
     const device = trackedDevices.findDevice(
@@ -266,22 +268,28 @@ $(document).ready(() => {
     const dev = datas.filter((item) => item.id === device.deviceId);
 
     console.log("DV:", dev[0]);
-    table.innerHTML =
-      '<div style="background:white;font-size:12px;position:fixed;top:35%;right:5px;border-radius:4px;"><h1>' +
-      "name:" +
-      dev[0].name +
-      "<br>" +
-      "position:" +
-      dev[0].location +
-      "<br>" +
-      "lamp:" +
-      dev[0].lamp +
-      "Pa" +
-      "<br>" +
-      "water:" +
-      dev[0].water +
-      "ºC" +
-      "</h1></div>";
+    deviceName.innerText = dev[0].name;
+    deviceLocation.innerText = dev[0].location;
+    deviceDescription.innerText = dev[0].description;
+    deviceLamp.innerText = dev[0].lamp + " Pa";
+    deviceWater.innerText = dev[0].water + " ºC";
+
+    // table.innerHTML =
+    //   '<div style="background:white;font-size:12px;position:fixed;top:35%;right:5px;border-radius:4px;"><h1>' +
+    //   "name:" +
+    //   dev[0].name +
+    //   "<br>" +
+    //   "position:" +
+    //   dev[0].location +
+    //   "<br>" +
+    //   "lamp:" +
+    //   dev[0].lamp +
+    //   "Pa" +
+    //   "<br>" +
+    //   "water:" +
+    //   dev[0].water +
+    //   "ºC" +
+    //   "</h1></div>";
     chartData.labels = device.timeData;
     chartData.datasets[0].data = device.temperatureData;
     chartData.datasets[1].data = device.humidityData;

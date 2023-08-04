@@ -1,13 +1,17 @@
 <!doctype html>
 
 <html lang="en">
+
 <head>
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-    <script src="https://code.jquery.com/jquery-3.4.0.min.js" integrity="sha256-BJeo0qm959uMBGb65z40ejJYGSgR7REI4+CW1fNKwOg=" crossorigin="anonymous"" type="text/javascript" charset="utf-8"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0/dist/Chart.min.js" type="text/javascript" charset="utf-8"></script>
+    <script src="https://code.jquery.com/jquery-3.4.0.min.js"
+        integrity="sha256-BJeo0qm959uMBGb65z40ejJYGSgR7REI4+CW1fNKwOg=" crossorigin="anonymous"" type=" text/javascript"
+        charset="utf-8"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0/dist/Chart.min.js" type="text/javascript"
+        charset="utf-8"></script>
     <script src="js/chart-device-data.js" type="text/javascript" charset="utf-8"></script>
     <link href="css/style.css" rel="stylesheet" />
 
@@ -15,39 +19,93 @@
 </head>
 
 <body>
-    <div class="header">
-        <div class="tittle">
-            Hệ thống giám sát và điều khiển trang trại
+    <div class="container">
+        <div class="header">
+            <div class="tittle">
+                Hệ thống giám sát và điều khiển trang trại
+            </div>>
         </div>>
-    </div>>
-    <h1 class="flexHeader">
-        <span>
-            <span id="deviceCount">0 devices</span>
-            <select id="listOfDevices" class="select_box"></select>
-            <!-- Tưới nước: <input type="checkbox" id="autoSelect">
-            Bật đèn: <input type="checkbox" id="autoSelect2"> -->
-        </span>
-        <span>Temperature & Humidity Real-time Data</span>
-    </h1>
-   <div class="wrapper">
-    <div class="chart">
-        <canvas id="iotChart"></canvas>     
-    </div>
-    <div id="table">   
-        <div id="info">   
+        <h1 class="flexHeader">
+            <span>
+                <span id="deviceCount">0 devices</span>
+                <select id="listOfDevices" class="select_box"></select>
+            </span>
+            <span></span>
+        </h1>
+        <div class="wrapper">
+            <div class="chart">
+                <canvas id="iotChart"></canvas>
+            </div>
+            <div id="table" class="left">
+                <div class="info">
+                    <h1 style="margin-bottom: 20px;">Thông tin thiết bị</h1>
+                    <div class="detail">
+                        <div class="name" >
+                            Tên thiết bị
+                        </div>
+                        <div style="width: 10px; font-weight: 500;">
+                            :
+                        </div>
+                        <div id="device-name" style="width: 140px;">
+                        </div>
+                    </div>
+                    <div class="detail">
+                        <div class="name" >
+                            Vị trí
+                        </div>
+                        <div style="width: 10px; font-weight: 500;">
+                            :
+                        </div>
+                        <div id="device-location" style="width: 140px;">
+                        </div>
+                    </div>
+                    <div class="detail">
+                        <div class="name" >
+                            Chi tiết
+                        </div>
+                        <div style="width: 10px; font-weight: 500;">
+                            :
+                        </div>
+                        <div id="device-description" style="width: 140px;">
+                        </div>
+                    </div>
+                    <div class="detail">
+                        <div class="name" >
+                            Sưởi
+                        </div>
+                        <div style="width: 10px; font-weight: 500;">
+                            :
+                        </div>
+                        <div id="device-lamp" style="width: 140px;">
+                        </div>
+                    </div>
+                    <div class="detail">
+                        <div class="name" >
+                            Tưới
+                        </div>
+                        <div style="width: 10px; font-weight: 500;">
+                            :
+                        </div>
+                        <div id="device-water" style="width: 140px;">
+                        </div>
+                    </div>
+                   
+                </div>
+                <div class="auto">
+                    <div class="lamp">
+                        <h2>Tưới</h2> <canvas style="height: 100px;width: 100px;" id="lightChart"></canvas>
+                    </div>
+                    <div class="lamp">
+                        <h2>Sưởi</h2> <canvas style="height: 100px;width: 100px;" id="waterChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="wrapper">
+
         </div>
     </div>
-   </div>
-   <div class="wrapper">
-    <div class="chart">
-        <canvas id="lightChart"></canvas>
-    </div>
-   </div>
-   <div class="wrapper">
-    <div class="chart">
-        <canvas id="waterChart"></canvas>
-    </div>
-   </div>
+
 </body>
 
 
