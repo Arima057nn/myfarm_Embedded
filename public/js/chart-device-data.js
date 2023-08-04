@@ -9,7 +9,7 @@ const datas = [
     location: "Nhà 1",
     name: "Device 1",
     description: "",
-    water: 70,
+    water: 75,
     lamp: 26,
     temperature: 0,
     humidity: 0,
@@ -51,9 +51,6 @@ $(document).ready(() => {
     }
 
     addData(time, temperature, humidity, pressure) {
-      // if (checkBtn.checked && humidity > 70) console.log("Tưới nước má ơi !");
-      // if (checkBtn2.checked && temperature < 30) console.log("Bật đèn má ơi !");
-
       this.timeData.push(time);
       this.temperatureData.push(temperature);
       this.humidityData.push(humidity || null);
@@ -141,8 +138,21 @@ $(document).ready(() => {
       {
         data: [0, 360],
         backgroundColor: [
-          "#FD8D14", // Màu sáng
-          "#FFEEBB", // Màu tối
+          "#FD8D14", // Bật sưởi
+          "#FFEEBB", // Tắt sưởi
+        ],
+        borderWidth: 0,
+      },
+    ],
+  };
+
+  const waterData = {
+    datasets: [
+      {
+        data: [0, 360],
+        backgroundColor: [
+          "#19A7CE", // bật tưới
+          "#C5DFF8", // tắt tưới
         ],
         borderWidth: 0,
       },
@@ -201,6 +211,7 @@ $(document).ready(() => {
   // Get the context of the canvas element we want to select
   const ctx = document.getElementById("iotChart").getContext("2d");
   const ctxLight = document.getElementById("lightChart").getContext("2d");
+  const ctxWater = document.getElementById("waterChart").getContext("2d");
   const myLineChart = new Chart(ctx, {
     type: "line",
     data: chartData,
@@ -210,6 +221,21 @@ $(document).ready(() => {
   const myLightChart = new Chart(ctxLight, {
     type: "pie",
     data: lightData,
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      cutoutPercentage: 10, // Kích thước của bóng đèn
+      legend: {
+        display: false,
+      },
+      tooltips: {
+        enabled: false,
+      },
+    },
+  });
+  const myWaterChart = new Chart(ctxWater, {
+    type: "pie",
+    data: waterData,
     options: {
       responsive: true,
       maintainAspectRatio: false,
@@ -268,6 +294,13 @@ $(document).ready(() => {
       lightData.datasets[0].data = [0, 360];
       myLightChart.update();
     }
+    if (device.present.humidity > dev[0].water) {
+      waterData.datasets[0].data = [360, 0];
+      myWaterChart.update();
+    } else {
+      waterData.datasets[0].data = [0, 360];
+      myWaterChart.update();
+    }
     myLineChart.update();
   }
   listOfDevices.addEventListener("change", OnSelectionChange, false);
@@ -314,6 +347,13 @@ $(document).ready(() => {
         } else {
           lightData.datasets[0].data = [0, 360];
           myLightChart.update();
+        }
+        if (messageData.IotData.humidity > dev[0].water) {
+          waterData.datasets[0].data = [360, 0];
+          myWaterChart.update();
+        } else {
+          waterData.datasets[0].data = [0, 360];
+          myWaterChart.update();
         }
       } else {
         const newDeviceData = new DeviceData(messageData.DeviceId);
