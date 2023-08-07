@@ -8,7 +8,8 @@ const datas = [
     index: 0,
     location: "Vườn rau cải",
     name: "Raspberry-pi 1",
-    description: "Cảm biến nhiệt độ, độ ẩm, CO2 để kiểm soát môi trường ",
+    description:
+      "Trang bị cảm biến BME-280 dùng để đo nhiệt độ, áp suất và độ ẩm",
     water: 75,
     lamp: 26,
     temperature: 0,
@@ -21,7 +22,8 @@ const datas = [
     index: 1, //Tự set cho nó bằng số thứ tự trong mảng
     location: "Vườn bưởi",
     name: "Raspberry-pi 2",
-    description: "Cảm biến nhiệt độ, độ ẩm, CO2 để kiểm soát môi trường",
+    description:
+      "Trang bị cảm biến BME-280 dùng để đo nhiệt độ, áp suất và độ ẩm",
     water: 72,
     lamp: 22,
     temperature: 0, // defaule bằng 0
