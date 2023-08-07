@@ -17,20 +17,86 @@
 
     <title>Temperature &amp; Humidity Real-time Data</title>
 </head>
+<script>
+    $(document).ready(function () {
+        // Hide chart and table initially
+        $(".header").hide();
+        $(".flexHeader").hide();
+        $(".chart").hide();
+        $("#table").hide();
+
+
+        // Show home page with start button
+        var homeWrapper = `
+        <div id="homepage-wrap" class="container background-image">
+            <h1>Hệ thống giám sát và điều khiển trang trại</h1>
+            <div class="info-section">
+                <h2>Tên môn học</h2>
+                <p class="subject-info">Linux hệ nhúng theo chuẩn kỹ năng ITSS</p>
+            </div>
+            <div class="info-section">
+                <h2>Nội dung project</h2>
+                <p class="subject-info"> Giả lập hệ thống giám sát và điều khiển trang trại từ xa sử dụng Raspberry Pi và Azure IoT Hub</p>
+            </div>
+            <div class="info-section">
+                <h2>Giảng viên hướng dẫn</h2>
+                <p class="subject-info">TS.Đặng Tuấn Linh</p>
+            </div>
+            <div class="info-section">
+                <h2 class="member-title">Thành viên nhóm</h2>
+                <div class="team-members">
+                    <div class="team-member">
+                        
+                        <p class="member-name">Hoàng Quốc Bảo - 20194484<span>Nhóm trưởng</span></p>
+                    </div>
+                    <div class="team-member">
+                       
+                        <p class="member-name">Phạm Tiến Dũng - 20194525<span>Thành viên</span></p>
+                    </div>
+                    <div class="team-member">
+                       
+                        <p class="member-name">Hà Văn Đức - 20194510<span>Thành viên</span></p>
+                    </div>
+                </div>
+            </div>
+            <button type="button" id="startButton" class="btn btn-info">Start</button>
+        </div>`;
+        $('body').append(homeWrapper);
+
+        // When the start button is clicked, hide the button and show the chart and table
+        $("#startButton").click(function () {
+            $(".header").show();
+            $("#homepage-wrap").hide();
+            $(".flexHeader").show();
+            $(".chart").show();
+            $("#table").show();
+        });
+
+        //when the back button is clicked, hide the chart and table and show the home page
+        $(".btn-back").click(function () {
+            $(".header").hide();
+            $(".flexHeader").hide();
+            $(".chart").hide();
+            $("#table").hide();
+            $('#homepage-wrap').show();
+        });
+    });
+</script>
 
 <body>
     <div class="container">
         <div class="header">
             <div class="tittle">
-                Hệ thống giám sát và điều khiển trang trại
-            </div>>
-        </div>>
+                <img class="btn-back" src="./image/btn-back.png" alt="btn-back">
+                <span class="big-title">Hệ thống giám sát và điều khiển trang trại</span>
+            </div>
+        </div>
         <h1 class="flexHeader">
-            <span>
-                <span id="deviceCount">0 devices</span>
-                <select id="listOfDevices" class="select_box"></select>
+            <span style="display: flex;align-items: center; margin-top: 8px;">
+                <span id="deviceCount" style="margin-right: 12px;">0 devices</span>
+                <select id="listOfDevices" class="select_box" style="margin-right: 12px;"></select>
             </span>
-            <span></span>
+           
         </h1>
         <div class="wrapper">
             <div class="chart">
@@ -38,71 +104,71 @@
             </div>
             <div id="table" class="left">
                 <div class="info">
-                    <h1 style="margin-bottom: 20px;">Thông tin thiết bị</h1>
+                    <h1 style="margin-bottom: 8px;">Thông tin thiết bị</h1>
                     <div class="detail">
-                        <div class="name" >
+                        <div class="name">
                             Tên thiết bị
                         </div>
                         <div style="width: 10px; font-weight: 500;">
                             :
                         </div>
-                        <div id="device-name" style="width: 140px;">
+                        <div id="device-name" style="width: 150px;">
                         </div>
                     </div>
                     <div class="detail">
-                        <div class="name" >
+                        <div class="name">
                             Vị trí
                         </div>
                         <div style="width: 10px; font-weight: 500;">
                             :
                         </div>
-                        <div id="device-location" style="width: 140px;">
+                        <div id="device-location" style="width: 150px;">
                         </div>
                     </div>
                     <div class="detail">
-                        <div class="name" >
+                        <div class="name">
                             Chi tiết
                         </div>
                         <div style="width: 10px; font-weight: 500;">
                             :
                         </div>
-                        <div id="device-description" style="width: 140px;">
+                        <div id="device-description" style="width: 150px;">
                         </div>
                     </div>
                     <div class="detail">
-                        <div class="name" >
-                            Sưởi
+                        
+                        <div class="name">
+                            Ngưỡng sưởi
                         </div>
                         <div style="width: 10px; font-weight: 500;">
                             :
                         </div>
-                        <div id="device-lamp" style="width: 140px;">
+                        <div id="device-lamp" style="width: 150px;">
                         </div>
                     </div>
                     <div class="detail">
-                        <div class="name" >
-                            Tưới
+                        <div class="name">
+                            Ngưỡng tưới
                         </div>
                         <div style="width: 10px; font-weight: 500;">
                             :
                         </div>
-                        <div id="device-water" style="width: 140px;">
+                        <div id="device-water" style="width: 150px;">
                         </div>
                     </div>
-                   
+
                 </div>
                 <div class="auto">
+                    <h1 style="margin-bottom: 6px;">Trạng thái</h1>
+
                     <div class="lamp">
-                        <h2>Tưới</h2> <canvas style="height: 100px;width: 100px;" id="lightChart"></canvas>
+                        <h2>Sưởi</h2> <canvas style="height: 80px;width: 80px;" id="lightChart"></canvas>
                     </div>
                     <div class="lamp">
-                        <h2>Sưởi</h2> <canvas style="height: 100px;width: 100px;" id="waterChart"></canvas>
+                        <h2>Tưới</h2> <canvas style="height: 80px;width: 80px;" id="waterChart"></canvas>
                     </div>
                 </div>
             </div>
-        </div>
-        <div class="wrapper">
-
         </div>
     </div>
 

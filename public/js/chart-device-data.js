@@ -6,9 +6,10 @@ const datas = [
   {
     id: "mydeviceID",
     index: 0,
-    location: "Nhà 1",
-    name: "Device 1",
-    description: "",
+    location: "Vườn rau cải",
+    name: "Raspberry-pi 1",
+    description:
+      "Trang bị cảm biến BME-280 dùng để đo nhiệt độ, áp suất và độ ẩm",
     water: 75,
     lamp: 26,
     temperature: 0,
@@ -19,9 +20,10 @@ const datas = [
   {
     id: "Device3",
     index: 1, //Tự set cho nó bằng số thứ tự trong mảng
-    location: "Nhà 2",
-    name: "Device 2",
-    description: "",
+    location: "Vườn bưởi",
+    name: "Raspberry-pi 2",
+    description:
+      "Trang bị cảm biến BME-280 dùng để đo nhiệt độ, áp suất và độ ẩm",
     water: 72,
     lamp: 22,
     temperature: 0, // defaule bằng 0
@@ -100,7 +102,7 @@ $(document).ready(() => {
     datasets: [
       {
         fill: false,
-        label: "Temperature",
+        label: "Nhiệt độ (ºC)",
         yAxisID: "Temperature",
         borderColor: "rgba(255, 204, 0, 1)",
         pointBoarderColor: "rgba(255, 204, 0, 1)",
@@ -111,7 +113,7 @@ $(document).ready(() => {
       },
       {
         fill: false,
-        label: "Humidity",
+        label: "Độ ẩm (%)",
         yAxisID: "Humidity",
         borderColor: "rgba(24, 120, 240, 1)",
         pointBoarderColor: "rgba(24, 120, 240, 1)",
@@ -122,7 +124,7 @@ $(document).ready(() => {
       },
       {
         fill: false,
-        label: "Pressure",
+        label: "Áp suất (Pa)",
         yAxisID: "Pressure",
         borderColor: "#22A699",
         pointBoarderColor: "#22A699",
@@ -138,8 +140,8 @@ $(document).ready(() => {
       {
         data: [0, 360],
         backgroundColor: [
-          "#FD8D14", // Bật sưởi
-          "#FFEEBB", // Tắt sưởi
+          "#1B9C85", // Bật sưởi
+          "#D6E8DB", // Tắt sưởi
         ],
         borderWidth: 0,
       },
@@ -151,8 +153,8 @@ $(document).ready(() => {
       {
         data: [0, 360],
         backgroundColor: [
-          "#19A7CE", // bật tưới
-          "#C5DFF8", // tắt tưới
+          "#1B9C85", // bật tưới
+          "#D6E8DB", // tắt tưới
         ],
         borderWidth: 0,
       },
@@ -271,38 +273,22 @@ $(document).ready(() => {
     deviceName.innerText = dev[0].name;
     deviceLocation.innerText = dev[0].location;
     deviceDescription.innerText = dev[0].description;
-    deviceLamp.innerText = dev[0].lamp + " Pa";
-    deviceWater.innerText = dev[0].water + " ºC";
+    deviceLamp.innerText = dev[0].lamp + " ºC";
+    deviceWater.innerText = dev[0].water + " %";
 
-    // table.innerHTML =
-    //   '<div style="background:white;font-size:12px;position:fixed;top:35%;right:5px;border-radius:4px;"><h1>' +
-    //   "name:" +
-    //   dev[0].name +
-    //   "<br>" +
-    //   "position:" +
-    //   dev[0].location +
-    //   "<br>" +
-    //   "lamp:" +
-    //   dev[0].lamp +
-    //   "Pa" +
-    //   "<br>" +
-    //   "water:" +
-    //   dev[0].water +
-    //   "ºC" +
-    //   "</h1></div>";
     chartData.labels = device.timeData;
     chartData.datasets[0].data = device.temperatureData;
     chartData.datasets[1].data = device.humidityData;
     chartData.datasets[2].data = device.pressureData;
     console.log("first:", device.present);
-    if (device.present.temperature > dev[0].lamp) {
+    if (device.present.temperature < dev[0].lamp) {
       lightData.datasets[0].data = [360, 0];
       myLightChart.update();
     } else {
       lightData.datasets[0].data = [0, 360];
       myLightChart.update();
     }
-    if (device.present.humidity > dev[0].water) {
+    if (device.present.humidity < dev[0].water) {
       waterData.datasets[0].data = [360, 0];
       myWaterChart.update();
     } else {
@@ -349,14 +335,14 @@ $(document).ready(() => {
           messageData.IotData.humidity,
           messageData.IotData.pressure
         );
-        if (messageData.IotData.temperature > dev[0].lamp) {
+        if (messageData.IotData.temperature < dev[0].lamp) {
           lightData.datasets[0].data = [360, 0];
           myLightChart.update();
         } else {
           lightData.datasets[0].data = [0, 360];
           myLightChart.update();
         }
-        if (messageData.IotData.humidity > dev[0].water) {
+        if (messageData.IotData.humidity < dev[0].water) {
           waterData.datasets[0].data = [360, 0];
           myWaterChart.update();
         } else {
@@ -368,7 +354,11 @@ $(document).ready(() => {
         trackedDevices.devices.push(newDeviceData);
         const numDevices = trackedDevices.getDevicesCount();
         deviceCount.innerText =
-          numDevices === 1 ? `${numDevices} device` : `${numDevices} devices`;
+          numDevices === 1
+            ? `Các thiết bị đang hoạt động (${numDevices}) `
+            : `Các thiết bị đang hoạt động (${numDevices}) `;
+        // : `Các thiết bị đang hoạt động : ${numDevices} thiết bị`;
+
         newDeviceData.addData(
           messageData.MessageDate,
           messageData.IotData.temperature,
