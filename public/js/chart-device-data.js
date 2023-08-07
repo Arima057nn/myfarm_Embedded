@@ -6,9 +6,9 @@ const datas = [
   {
     id: "mydeviceID",
     index: 0,
-    location: "Nhà 1",
-    name: "Device 1",
-    description: "",
+    location: "Vườn rau cải",
+    name: "Raspberry-pi 1",
+    description: "Cảm biến nhiệt độ, độ ẩm, CO2 để kiểm soát môi trường ",
     water: 75,
     lamp: 26,
     temperature: 0,
@@ -19,9 +19,9 @@ const datas = [
   {
     id: "Device3",
     index: 1, //Tự set cho nó bằng số thứ tự trong mảng
-    location: "Nhà 2",
-    name: "Device 2",
-    description: "",
+    location: "Vườn bưởi",
+    name: "Raspberry-pi 2",
+    description: "Cảm biến nhiệt độ, độ ẩm, CO2 để kiểm soát môi trường",
     water: 72,
     lamp: 22,
     temperature: 0, // defaule bằng 0
@@ -100,7 +100,7 @@ $(document).ready(() => {
     datasets: [
       {
         fill: false,
-        label: "Temperature (ºC)",
+        label: "Nhiệt độ (ºC)",
         yAxisID: "Temperature",
         borderColor: "rgba(255, 204, 0, 1)",
         pointBoarderColor: "rgba(255, 204, 0, 1)",
@@ -111,7 +111,7 @@ $(document).ready(() => {
       },
       {
         fill: false,
-        label: "Humidity (%)",
+        label: "Độ ẩm (%)",
         yAxisID: "Humidity",
         borderColor: "rgba(24, 120, 240, 1)",
         pointBoarderColor: "rgba(24, 120, 240, 1)",
@@ -122,7 +122,7 @@ $(document).ready(() => {
       },
       {
         fill: false,
-        label: "Pressure (Pa)",
+        label: "Áp suất (Pa)",
         yAxisID: "Pressure",
         borderColor: "#22A699",
         pointBoarderColor: "#22A699",

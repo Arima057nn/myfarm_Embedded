@@ -77,12 +77,16 @@ const eventHubReader = new EventHubReader(
       console.log("dev: ", deviceId);
       // Gửi tin nhắn C2D tới thiết bị với ID là deviceId
 
+      message_text = "";
+
       if (water) {
         if (message.humidity < dev[0].water) {
           if (dev[0].humidity < dev[0].water) {
             console.log("Đã tưới cây cho:", deviceId, dev[0].humidity);
           } else {
-            sendC2DMessage(dev[0].sendC2D, "bat-tuoi");
+            // sendC2DMessage(dev[0].sendC2D, "bat-tuoi");
+            // concate messafe_text with "bat-tuoi"
+            message_text += "bat-tuoi";
             console.log("Bật tưới cây cho: ", deviceId);
           }
         } else {
@@ -90,7 +94,9 @@ const eventHubReader = new EventHubReader(
             console.log("Đã tắt tưới cây cho:", deviceId, dev[0].humidity);
           } else {
             // console.log("Bật tưới cây cho: ", deviceId);
-            sendC2DMessage(dev[0].sendC2D, "tat-tuoi");
+            // sendC2DMessage(dev[0].sendC2D, "tat-tuoi");
+            // concate messafe_text with "tat-tuoi"
+            message_text += "tat-tuoi";
           }
         }
       }
@@ -100,7 +106,9 @@ const eventHubReader = new EventHubReader(
           if (dev[0].temperature < dev[0].lamp) {
             console.log("Đã sưởi cây cho:", deviceId, dev[0].temperature);
           } else {
-            sendC2DMessage(dev[0].sendC2D, "bat-suoi");
+            // sendC2DMessage(dev[0].sendC2D, "bat-suoi");
+            // concate messafe_text with "bat-suoi"
+            message_text += "bat-suoi";
             console.log("Bật sưởi cây cho: ", deviceId);
           }
         } else {
@@ -108,9 +116,15 @@ const eventHubReader = new EventHubReader(
             console.log("Đã tắt sưởi cây cho:", deviceId, dev[0].temperature);
           } else {
             // console.log("Bật sưởi cây cho: ", deviceId);
-            sendC2DMessage(dev[0].sendC2D, "tat-suoi");
+            // sendC2DMessage(dev[0].sendC2D, "tat-suoi");
+            // concate messafe_text with "tat-suoi"
+            message_text += "tat-suoi";
           }
         }
+      }
+
+      if (message_text !== "") {
+        sendC2DMessage(dev[0].sendC2D, message_text);
       }
 
       //tat tuoi, tat suoi, bat tuoi, bat suoi
