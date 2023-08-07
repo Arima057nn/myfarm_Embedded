@@ -333,14 +333,14 @@ $(document).ready(() => {
           messageData.IotData.humidity,
           messageData.IotData.pressure
         );
-        if (messageData.IotData.temperature > dev[0].lamp) {
+        if (messageData.IotData.temperature < dev[0].lamp) {
           lightData.datasets[0].data = [360, 0];
           myLightChart.update();
         } else {
           lightData.datasets[0].data = [0, 360];
           myLightChart.update();
         }
-        if (messageData.IotData.humidity > dev[0].water) {
+        if (messageData.IotData.humidity < dev[0].water) {
           waterData.datasets[0].data = [360, 0];
           myWaterChart.update();
         } else {
