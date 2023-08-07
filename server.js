@@ -94,23 +94,25 @@ const eventHubReader = new EventHubReader(
           }
         }
       }
-      if (lamp) {
-        if (message.temperature > dev[0].lamp) {
-          if (dev[0].temperature > dev[0].lamp) {
-            console.log("Đã sưởi cây cho:", deviceId, dev[0].temperature);
+      setTimeout(() => {
+        if (lamp) {
+          if (message.temperature > dev[0].lamp) {
+            if (dev[0].temperature > dev[0].lamp) {
+              console.log("Đã sưởi cây cho:", deviceId, dev[0].temperature);
+            } else {
+              sendC2DMessage(dev[0].sendC2D, "bat-suoi");
+              console.log("Bật sưởi cây cho: ", deviceId);
+            }
           } else {
-            sendC2DMessage(dev[0].sendC2D, "bat-suoi");
-            console.log("Bật sưởi cây cho: ", deviceId);
-          }
-        } else {
-          if (dev[0].temperature < dev[0].lamp) {
-            console.log("Đã tắt sưởi cây cho:", deviceId, dev[0].temperature);
-          } else {
-            // console.log("Bật sưởi cây cho: ", deviceId);
-            sendC2DMessage(dev[0].sendC2D, "tat-suoi");
+            if (dev[0].temperature < dev[0].lamp) {
+              console.log("Đã tắt sưởi cây cho:", deviceId, dev[0].temperature);
+            } else {
+              // console.log("Bật sưởi cây cho: ", deviceId);
+              sendC2DMessage(dev[0].sendC2D, "tat-suoi");
+            }
           }
         }
-      }
+      }, 1000);
 
       //tat tuoi, tat suoi, bat tuoi, bat suoi
       datas[dev[0].index].temperature = message.temperature;

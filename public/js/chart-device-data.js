@@ -100,7 +100,7 @@ $(document).ready(() => {
     datasets: [
       {
         fill: false,
-        label: "Temperature",
+        label: "Temperature (ºC)",
         yAxisID: "Temperature",
         borderColor: "rgba(255, 204, 0, 1)",
         pointBoarderColor: "rgba(255, 204, 0, 1)",
@@ -111,7 +111,7 @@ $(document).ready(() => {
       },
       {
         fill: false,
-        label: "Humidity",
+        label: "Humidity (%)",
         yAxisID: "Humidity",
         borderColor: "rgba(24, 120, 240, 1)",
         pointBoarderColor: "rgba(24, 120, 240, 1)",
@@ -122,7 +122,7 @@ $(document).ready(() => {
       },
       {
         fill: false,
-        label: "Pressure",
+        label: "Pressure (Pa)",
         yAxisID: "Pressure",
         borderColor: "#22A699",
         pointBoarderColor: "#22A699",
