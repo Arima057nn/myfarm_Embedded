@@ -17,13 +17,79 @@
 
     <title>Temperature &amp; Humidity Real-time Data</title>
 </head>
+<script>
+    $(document).ready(function () {
+        // Hide chart and table initially
+        $(".header").hide();
+        $(".flexHeader").hide();
+        $(".chart").hide();
+        $("#table").hide();
+
+
+        // Show home page with start button
+        var homeWrapper = `
+        <div id="homepage-wrap" class="container background-image">
+            <h1>Thông tin project</h1>
+            <div class="info-section">
+                <h2>Tên môn học</h2>
+                <p class="subject-info">ITSS hệ nhúng</p>
+            </div>
+            <div class="info-section">
+                <h2>Nội dung project</h2>
+                <p class="subject-info"> Giả lập hệ thống giám sát và điều khiển trang trại từ xa sử dụng Raspberry Pi và Azure IoT Hub</p>
+            </div>
+            <div class="info-section">
+                <h2>Giảng viên hướng dẫn</h2>
+                <p class="subject-info">TS.Đặng Tuấn Linh</p>
+            </div>
+            <div class="info-section">
+                <h2 class="member-title">Thành viên nhóm</h2>
+                <div class="team-members">
+                    <div class="team-member">
+                        <img src="./image/member1.jpg" alt="Team Member 1">
+                        <p class="member-name">Hoàng Quốc Bảo - 20194484<span>Nhóm trưởng</span></p>
+                    </div>
+                    <div class="team-member">
+                        <img src="./image/member2.jpeg" alt="Team Member 2">
+                        <p class="member-name">Phạm Tiến Dũng - 20194525<span>Thành viên</span></p>
+                    </div>
+                    <div class="team-member">
+                        <img src="./image/member3.jpg" alt="Team Member 3">
+                        <p class="member-name">Hà Văn Đức - 20194510<span>Thành viên</span></p>
+                    </div>
+                </div>
+            </div>
+            <button type="button" id="startButton" class="btn btn-info">Start</button>
+        </div>`;
+        $('body').append(homeWrapper);
+
+        // When the start button is clicked, hide the button and show the chart and table
+        $("#startButton").click(function () {
+            $(".header").show();
+            $("#homepage-wrap").hide();
+            $(".flexHeader").show();
+            $(".chart").show();
+            $("#table").show();
+        });
+
+        //when the back button is clicked, hide the chart and table and show the home page
+        $(".btn-back").click(function () {
+            $(".header").hide();
+            $(".flexHeader").hide();
+            $(".chart").hide();
+            $("#table").hide();
+            $('#homepage-wrap').show();
+        });
+    });
+</script>
 
 <body>
     <div class="container">
         <div class="header">
             <div class="tittle">
-                Hệ thống giám sát và điều khiển trang trại
-            </div>>
+                <img class="btn-back" src="./image/btn-back.png" alt="btn-back">
+                <span class="big-title">Hệ thống giám sát và điều khiển trang trại</span>
+            </div>
         </div>>
         <h1 class="flexHeader">
             <span>
@@ -40,7 +106,7 @@
                 <div class="info">
                     <h1 style="margin-bottom: 20px;">Thông tin thiết bị</h1>
                     <div class="detail">
-                        <div class="name" >
+                        <div class="name">
                             Tên thiết bị
                         </div>
                         <div style="width: 10px; font-weight: 500;">
@@ -50,7 +116,7 @@
                         </div>
                     </div>
                     <div class="detail">
-                        <div class="name" >
+                        <div class="name">
                             Vị trí
                         </div>
                         <div style="width: 10px; font-weight: 500;">
@@ -60,7 +126,7 @@
                         </div>
                     </div>
                     <div class="detail">
-                        <div class="name" >
+                        <div class="name">
                             Chi tiết
                         </div>
                         <div style="width: 10px; font-weight: 500;">
@@ -70,7 +136,7 @@
                         </div>
                     </div>
                     <div class="detail">
-                        <div class="name" >
+                        <div class="name">
                             Sưởi
                         </div>
                         <div style="width: 10px; font-weight: 500;">
@@ -80,7 +146,7 @@
                         </div>
                     </div>
                     <div class="detail">
-                        <div class="name" >
+                        <div class="name">
                             Tưới
                         </div>
                         <div style="width: 10px; font-weight: 500;">
@@ -89,7 +155,7 @@
                         <div id="device-water" style="width: 140px;">
                         </div>
                     </div>
-                   
+
                 </div>
                 <div class="auto">
                     <div class="lamp">
